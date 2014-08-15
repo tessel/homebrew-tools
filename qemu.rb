@@ -46,49 +46,17 @@ end
 
 __END__
 diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index 80028e8..fc5d290 100644
+index 80028e8..153d4a6 100644
 --- a/hw/arm/stellaris.c
 +++ b/hw/arm/stellaris.c
-@@ -1199,7 +1199,7 @@ static stellaris_board_info stellaris_boards[] = {
- };
- 
- static void stellaris_init(const char *kernel_filename, const char *cpu_model,
--                           stellaris_board_info *board)
-+                           int sram_size, stellaris_board_info *board)
- {
-     static const int uart_irq[] = {5, 6, 33, 34};
-     static const int timer_irq[] = {19, 21, 23, 35};
-@@ -1214,7 +1214,6 @@ static void stellaris_init(const char *kernel_filename, const char *cpu_model,
-     qemu_irq gpio_in[7][8];
-     qemu_irq gpio_out[7][8];
-     qemu_irq adc;
--    int sram_size;
-     int flash_size;
-     I2CBus *i2c;
-     DeviceState *dev;
-@@ -1222,7 +1221,7 @@ static void stellaris_init(const char *kernel_filename, const char *cpu_model,
+@@ -1221,8 +1221,8 @@ static void stellaris_init(const char *kernel_filename, const char *cpu_model,
+     int i;
      int j;
  
-     flash_size = ((board->dc0 & 0xffff) + 1) << 1;
+-    flash_size = ((board->dc0 & 0xffff) + 1) << 1;
 -    sram_size = (board->dc0 >> 18) + 1;
-+    if (sram_size > 32*1024*1024 || sram_size < 0) { sram_size = (board->dc0 >> 18) + 1; } else { sram_size /= 1024; }
++    flash_size = getenv("STELLARIS_FLASH") ? atoi(getenv("STELLARIS_FLASH")) : ((board->dc0 & 0xffff) + 1) << 1;
++    sram_size = getenv("STELLARIS_SRAM") ? atoi(getenv("STELLARIS_SRAM")) : (board->dc0 >> 18) + 1;
      pic = armv7m_init(address_space_mem,
                        flash_size, sram_size, kernel_filename, cpu_model);
  
-@@ -1338,14 +1337,14 @@ static void lm3s811evb_init(MachineState *machine)
- {
-     const char *cpu_model = machine->cpu_model;
-     const char *kernel_filename = machine->kernel_filename;
--    stellaris_init(kernel_filename, cpu_model, &stellaris_boards[0]);
-+    stellaris_init(kernel_filename, cpu_model, machine->ram_size, &stellaris_boards[0]);
- }
- 
- static void lm3s6965evb_init(MachineState *machine)
- {
-     const char *cpu_model = machine->cpu_model;
-     const char *kernel_filename = machine->kernel_filename;
--    stellaris_init(kernel_filename, cpu_model, &stellaris_boards[1]);
-+    stellaris_init(kernel_filename, cpu_model, machine->ram_size, &stellaris_boards[1]);
- }
- 
- static QEMUMachine lm3s811evb_machine = {
