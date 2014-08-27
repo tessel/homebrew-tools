@@ -11,7 +11,8 @@ class Gyp < Formula
      # initialize the installation of this
      def install
              # use the brew python to install the tools needed
-	     system 'python', 'setup.py', 'install'
+	     system 'python', 'setup.py', 'install', "--prefix=#{prefix}", "--single-version-externally-managed", "--record=installed.txt"
+
 
              # install the gyp executable
              bin.install("gyp")
