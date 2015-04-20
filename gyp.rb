@@ -2,8 +2,7 @@ require 'formula'
 
 class Gyp < Formula
 
-      # homebrew should automatically know what to do svn repos
-      url "http://gyp.googlecode.com/svn/trunk/", :using => :svn
+      url "https://chromium.googlesource.com/external/gyp", :using => :git
       version "1.0"
 
       depends_on :python
