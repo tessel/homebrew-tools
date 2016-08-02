@@ -4,7 +4,7 @@ class Qemu < Formula
   homepage "http://www.qemu.org/"
   head "git://git.qemu-project.org/qemu.git"
   url "http://wiki.qemu-project.org/download/qemu-2.1.0.tar.bz2"
-  sha1 "b2829491e4c2f3d32f7bc2860c3a19fb31f5e989"
+  sha256 "397e23184f4bf613589a8fe0c6542461dc2afdf17ed337e97e6fd2f31e8f8802"
 
   bottle do
     sha1 "52345b6ec0fb3a9a4da93b3adc861e247a9d8702" => :mavericks
