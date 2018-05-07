@@ -5,7 +5,7 @@ class Gyp < Formula
       url "https://chromium.googlesource.com/external/gyp", :using => :git
       version "1.0"
 
-      depends_on :python
+      depends_on "python@2"
 
      # initialize the installation of this
      def install
